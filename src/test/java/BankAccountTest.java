@@ -1,10 +1,10 @@
 import accounts.CheckingAccount;
-import banks.Agency;
-import banks.Bank;
 import entity.Client;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BankAccountTest {
 
@@ -29,10 +29,29 @@ class BankAccountTest {
     @Test
     void shouldSuccessfullySetAndGetAAccountsClient() {
         CheckingAccount checkingAccount = new CheckingAccount();
-        Client client = new Client("Client1", "12345678901");
+
+        Client client = Mockito.mock(Client.class);
+        Mockito.when(client.getName()).thenReturn("Client1");
+        Mockito.when(client.getCpf()).thenReturn("Client1");
+
         checkingAccount.setClient(client);
         assertEquals(client, checkingAccount.getClient());
 
+    }
+
+    @Test
+    void shouldSuccessWhenPayingWithEnoughFunds() {
+        CheckingAccount checkingAccount = new CheckingAccount();
+        checkingAccount.deposit(100.0);
+        assertEquals(50.0, checkingAccount.payment(50.0));
+        assertEquals(0.0, checkingAccount.payment(50.0));
+    }
+
+    @Test
+    void shouldFailWhenPayingWithNotEnoughFunds() {
+        CheckingAccount checkingAccount = new CheckingAccount();
+        checkingAccount.deposit(100.0);
+        assertThrows(IllegalArgumentException.class, () -> checkingAccount.payment(100.01));
     }
 
     @Test
@@ -61,12 +80,11 @@ class BankAccountTest {
         CheckingAccount checkingAccount = new CheckingAccount();
         assertEquals(4, checkingAccount.getNumber().length());
     }
-    @Test
-    void shouldSuccessfullyGetAgencyNumber() {
-        Bank bank = new Bank("Bank1");
-        Agency agency = new Agency(bank);
-        CheckingAccount checkingAccount = agency.addClient("Client1", "12345678901").createCheckingAccount(agency.getNumber());
 
-        assertEquals(4, checkingAccount.getAgency().length());
+    @Test
+    void shouldSuccessfullySetAndGetAccountAgency() {
+        CheckingAccount checkingAccount = new CheckingAccount();
+        checkingAccount.setAgency("1234");
+        assertEquals("1234", checkingAccount.getAgency());
     }
 }

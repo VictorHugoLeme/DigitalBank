@@ -1,43 +1,33 @@
 package entity;
 
-import accounts.CheckingAccount;
-import accounts.SavingsAccount;
-import banks.Agency;
-import lombok.Data;
+import accounts.BankAccount;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
 @RequiredArgsConstructor
 public class Client {
+
     @NonNull
+    @Getter
+    @Setter
     private String name;
     @NonNull
+    @Getter
+    @Setter
     private String cpf;
-    private List<Agency> agencies = new ArrayList<>();
+    @Getter
+    private final Set<BankAccount> accounts = new HashSet<>();
 
-    public void addAgency(Agency agency) {
-        this.agencies.add(agency);
-    }
-
-    public CheckingAccount createCheckingAccount(String agency) {
-        CheckingAccount checkingAccount = new CheckingAccount();
-        checkingAccount.setClient(this);
-        checkingAccount.setAgency(this.agencies.stream().filter(a -> a.getNumber().equals(agency)).findFirst().orElseThrow().getNumber());
-        return checkingAccount;
-    }
-
-    public SavingsAccount createSavingsAccount(String agency) {
-        SavingsAccount savingsAccount = new SavingsAccount();
-        savingsAccount.setClient(this);
-        savingsAccount.setAgency(this.agencies.stream().filter(a -> a.getNumber().equals(agency)).findFirst().orElseThrow().getNumber());
-        return savingsAccount;
+    public void addAccount(BankAccount account) {
+        this.accounts.add(account);
     }
 
     public String toString() {
-        return "entity.Client: " + this.name + " - " + this.cpf;
+        return "Client: " + this.name + " - " + this.cpf;
     }
 }
