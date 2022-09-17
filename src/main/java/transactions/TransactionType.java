@@ -3,7 +3,8 @@ package transactions;
 public enum TransactionType {
     WITHDRAW("Withdraw"),
     DEPOSIT("Deposit"),
-    TRANSFER("Transfer");
+    TRANSFER("Transfer"),
+    PAYMENT("Payment");
 
     private final String description;
 

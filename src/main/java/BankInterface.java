@@ -1,3 +1,5 @@
+import accounts.AccountTypes;
+import accounts.BankAccount;
 import accounts.CheckingAccount;
 import banks.Agency;
 import banks.Bank;
@@ -8,28 +10,28 @@ public class BankInterface {
         System.out.println("--------------------------------------------------");
         System.out.println("Creating new bank");
 
-        Bank bank = new Bank("Parceiria banks.Bank");
-        System.out.println("banks.Bank name:" + bank.getName());
+        Bank bank = new Bank("Parceiria Bank");
+        System.out.println("Bank name:" + bank.getName());
 
         System.out.println("--------------------------------------------------");
         System.out.println("Creating new agencies");
 
         Agency agency1 = bank.createAgency();
         Agency agency2 = bank.createAgency();
-        System.out.println("banks.Agency 1 number: " + agency1.getNumber());
-        System.out.println("banks.Agency 2 number: " + agency2.getNumber());
+        System.out.println("Agency 1 number: " + agency1.getNumber());
+        System.out.println("Agency 2 number: " + agency2.getNumber());
 
         System.out.println("--------------------------------------------------");
         System.out.println("Creating new clients and accounts");
 
-        Client victor = agency1.addClient("Victor", "12345678901");
-        CheckingAccount accountVictor1 =  victor.createCheckingAccount(agency1.getNumber());
-        System.out.println("entity.Client 1 name: " + victor.getName());
+        Client victor = new Client("Victor", "12345678900");
+        BankAccount accountVictor1 =  agency1.createAccount(victor, AccountTypes.CHECKING);
+        System.out.println("Client 1 name: " + victor.getName());
         System.out.println("Account 1 number: " + accountVictor1.getNumber());
 
-        Client hugo = agency2.addClient("Hugo", "12345678901");
-        CheckingAccount accountHugo1 =  hugo.createCheckingAccount(agency2.getNumber());
-        System.out.println("entity.Client 2 name: " + hugo.getName());
+        Client hugo = new Client("Hugo", "12345678901");
+        BankAccount accountHugo1 =  agency2.createAccount(hugo, AccountTypes.SAVINGS);
+        System.out.println("Client 2 name: " + hugo.getName());
         System.out.println("Account 2 number: " + accountHugo1.getNumber());
 
         System.out.println("--------------------------------------------------");
